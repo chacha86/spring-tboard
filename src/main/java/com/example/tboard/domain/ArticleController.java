@@ -31,42 +31,44 @@ public class ArticleController { // Model + Controller
     }
 
     public void detail() {
-        System.out.print("상세보기 할 게시물 번호를 입력해주세요 : ");
+//        System.out.print("상세보기 할 게시물 번호를 입력해주세요 : ");
+//
+//        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
+//        if(inputId == WRONG_VALUE) {
+//            return;
+//        }
 
-        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
-        if(inputId == WRONG_VALUE) {
-            return;
-        }
-
-        Article article = articleRepository.findArticleById(inputId);
-
-        if (article == null) {
-            System.out.println("없는 게시물입니다.");
-            return;
-        }
-
-        article.increaseHit();
-        articleView.printArticleDetail(article);
+//        Article article = articleRepository.findArticleById(inputId);
+//
+//        if (article == null) {
+//            System.out.println("없는 게시물입니다.");
+//            return;
+//        }
+//
+//        article.increaseHit();
+//        articleView.printArticleDetail(article);
 
     }
-    public void delete() {
 
-        System.out.print("삭제할 게시물 번호를 입력해주세요 : ");
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(@RequestParam("articleId") int articleId) {
 
-        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
-        if(inputId == WRONG_VALUE) {
-            return;
-        }
+//        System.out.print("삭제할 게시물 번호를 입력해주세요 : ");
+//
+//        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
+//        if(inputId == WRONG_VALUE) {
+//            return;
+//        }
 
-        Article article = articleRepository.findArticleById(inputId);
+        Article article = articleRepository.findArticleById(articleId);
 
         if (article == null) {
-            System.out.println("없는 게시물입니다.");
-            return;
+            return "없는 게시물입니다.";
         }
 
         articleRepository.deleteArticle(article);
-        System.out.printf("%d 게시물이 삭제되었습니다.\n", inputId);
+        return "%d 게시물이 삭제되었습니다.".formatted(articleId);
     }
 
     @RequestMapping("/update")
@@ -123,14 +125,5 @@ public class ArticleController { // Model + Controller
 //        System.out.println("게시물이 등록되었습니다.");
         return "게시물이 등록되었습니다.";
 
-    }
-
-    private int getParamAsInt(String param, int defaultValue) {
-        try {
-            return Integer.parseInt(param);
-        } catch (NumberFormatException e) {
-            System.out.println("숫자를 입력해주세요.");
-            return defaultValue;
-        }
     }
 }

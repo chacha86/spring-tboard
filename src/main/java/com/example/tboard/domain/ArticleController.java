@@ -1,6 +1,7 @@
 package com.example.tboard.domain;
 
 import com.example.tboard.base.CommonUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +31,9 @@ public class ArticleController { // Model + Controller
         articleView.printArticleList(searchedList);
     }
 
-    public void detail() {
+    @RequestMapping("/detail")
+    @ResponseBody
+    public String detail(@RequestParam("articleId") int articleId) {
 //        System.out.print("상세보기 할 게시물 번호를 입력해주세요 : ");
 //
 //        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
@@ -38,16 +41,28 @@ public class ArticleController { // Model + Controller
 //            return;
 //        }
 
-//        Article article = articleRepository.findArticleById(inputId);
-//
-//        if (article == null) {
-//            System.out.println("없는 게시물입니다.");
-//            return;
-//        }
-//
-//        article.increaseHit();
-//        articleView.printArticleDetail(article);
+        Article article = articleRepository.findArticleById(articleId);
 
+        if (article == null) {
+            return "없는 게시물입니다.";
+        }
+
+        article.increaseHit();
+
+        // 객체를 -> json 문자열로 변환 -> jackson 라이브러리 사용
+        String jsonString = "";
+        try {
+            // ObjectMapper 인스턴스 생성
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // 객체를 JSON 문자열로 변환
+            jsonString = objectMapper.writeValueAsString(article);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return jsonString;
     }
 
     @RequestMapping("/delete")

@@ -22,13 +22,15 @@ public class ArticleController { // Model + Controller
     int WRONG_VALUE = -1;
 
 
-    public void search() {
+    @RequestMapping("/search")
+    @ResponseBody
+    public ArrayList<Article> search(@RequestParam(value="keyword", defaultValue = "") String keyword) {
         // 검색어를 입력
-        System.out.println("검색 키워드를 입력해주세요 :");
-        String keyword = scan.nextLine();
+//        System.out.println("검색 키워드를 입력해주세요 :");
+//        String keyword = scan.nextLine();
         ArrayList<Article> searchedList = articleRepository.findArticleByKeyword(keyword);
 
-        articleView.printArticleList(searchedList);
+        return searchedList;
     }
 
     @RequestMapping("/detail")

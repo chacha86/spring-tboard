@@ -69,29 +69,34 @@ public class ArticleController { // Model + Controller
         System.out.printf("%d 게시물이 삭제되었습니다.\n", inputId);
     }
 
-    public void update() {
-        System.out.print("수정할 게시물 번호를 입력해주세요 : ");
-
-        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
-        if(inputId == WRONG_VALUE) {
-            return;
-        }
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(@RequestParam("articleId") int inputId,
+                       @RequestParam("newTitle") String newTitle,
+                       @RequestParam("newBody") String newBody
+                       ) {
+//        System.out.print("수정할 게시물 번호를 입력해주세요 : ");
+//
+//        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
+//        if(inputId == WRONG_VALUE) {
+//            return;
+//        }
 
         Article article = articleRepository.findArticleById(inputId);
 
         if (article == null) {
-            System.out.println("없는 게시물입니다.");
-            return;
+//            System.out.println("없는 게시물입니다.");
+            return "없는 게시물입니다.";
         }
 
-        System.out.print("새로운 제목을 입력해주세요 : ");
-        String newTitle = scan.nextLine();
-
-        System.out.print("새로운 내용을 입력해주세요 : ");
-        String newBody = scan.nextLine();
+//        System.out.print("새로운 제목을 입력해주세요 : ");
+//        String newTitle = scan.nextLine();
+//
+//        System.out.print("새로운 내용을 입력해주세요 : ");
+//        String newBody = scan.nextLine();
 
         articleRepository.updateArticle(article, newTitle, newBody);
-        System.out.printf("%d번 게시물이 수정되었습니다.\n", inputId);
+        return "%d번 게시물이 수정되었습니다.".formatted(inputId);
     }
 
     @RequestMapping("/list")

@@ -1,7 +1,6 @@
 package com.example.tboard.domain;
 
 import com.example.tboard.base.CommonUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +24,7 @@ public class ArticleController { // Model + Controller
     }
 
     @RequestMapping("/detail")
-    @ResponseBody
-    public String detail(@RequestParam("articleId") int articleId) {
+    public String detail(@RequestParam("articleId") int articleId, Model model) {
 
         Article article = articleRepository.findArticleById(articleId);
 
@@ -36,16 +34,8 @@ public class ArticleController { // Model + Controller
 
         article.increaseHit();
 
-        String jsonString = "";
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            jsonString = objectMapper.writeValueAsString(article);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return jsonString;
+        model.addAttribute("article", article);
+        return "detail";
     }
 
     @RequestMapping("/delete")

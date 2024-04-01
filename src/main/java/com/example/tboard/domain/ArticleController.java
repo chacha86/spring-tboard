@@ -3,6 +3,7 @@ package com.example.tboard.domain;
 import com.example.tboard.base.CommonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,11 +80,12 @@ public class ArticleController { // Model + Controller
     }
 
     @RequestMapping("/list")
-    @ResponseBody
-    public ArrayList<Article> list() {
+    public String list(Model model) {
 
         ArrayList<Article> articleList = articleRepository.findAll();
-        return articleList;
+        model.addAttribute("articleList", articleList);
+
+        return "list";
     }
 
     @RequestMapping("/add")

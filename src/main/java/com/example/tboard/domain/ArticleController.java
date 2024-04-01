@@ -3,9 +3,7 @@ package com.example.tboard.domain;
 import com.example.tboard.base.CommonUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -79,7 +77,7 @@ public class ArticleController { // Model + Controller
     }
 
     // 실제 데이터 저장 처리 부분
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public String add(@RequestParam("title") String title,
                       @RequestParam("body") String body,
                       Model model) {
@@ -94,7 +92,7 @@ public class ArticleController { // Model + Controller
     }
 
     // 입력 화면 보여주기
-    @RequestMapping("/form")
+    @GetMapping("/add")
     public String form() {
         return "form";
     }

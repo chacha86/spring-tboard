@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public class ArticleController { // Model + Controller
 
     CommonUtil commonUtil = new CommonUtil();
-    ArticleRepository articleRepository = new ArticleRepository();
+
+    Repository articleRepository = new ArticleMySQLRepository();
 
     @RequestMapping("/search")
     public String search(@RequestParam(value="keyword", defaultValue = "") String keyword,

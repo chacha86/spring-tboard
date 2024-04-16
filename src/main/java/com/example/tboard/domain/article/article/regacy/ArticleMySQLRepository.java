@@ -1,6 +1,7 @@
-package com.example.tboard.domain;
+package com.example.tboard.domain.article.article.regacy;
 
 import com.example.tboard.base.CommonUtil;
+import com.example.tboard.domain.article.article.Article;
 
 import java.sql.*;
 import java.util.ArrayList;

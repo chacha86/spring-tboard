@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+<nav>
+    <ul class="flex gap-5" th:with="menuHover = 'hover:text-red-600'">
+        <li><a href="/login" th:class="${menuHover}">로그인</a></li>
+        <li><a href="/list" th:class="${menuHover}">글 목록</a></li>
+        <li><a href="/add" th:class="${menuHover}">글쓰기</a></li>
+    </ul>
+    <div><span th:if="${session.memberAuth != null}" th:text="${session.memberAuth.loginId}"></span>님! 안녕하세요!</div>
+</nav>
+<div class="w-[600px] mt-[20px]">
+    <th:block layout:fragment="content"></th:block>
+</div>
+</body>
+</html>

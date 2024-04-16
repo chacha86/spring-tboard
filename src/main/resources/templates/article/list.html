@@ -1,0 +1,9 @@
+<html lang="ko" layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <ul class="w-[600px]">
+        <li th:each="article : ${articleList}" class="border-b-2 border-base-200">
+            <a th:href="@{|/detail/${article.id}|}" th:text="${article.title}"></a>
+        </li>
+    </ul>
+</div>
+</html>

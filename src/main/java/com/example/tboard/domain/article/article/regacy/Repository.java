@@ -1,4 +1,6 @@
-package com.example.tboard.domain;
+package com.example.tboard.domain.article.article.regacy;
+
+import com.example.tboard.domain.article.article.Article;
 
 import java.util.ArrayList;
 

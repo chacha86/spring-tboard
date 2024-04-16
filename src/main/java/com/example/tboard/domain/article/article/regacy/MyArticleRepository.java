@@ -1,14 +1,16 @@
-package com.example.tboard.domain;
+package com.example.tboard.domain.article.article.regacy;
 
 import com.example.tboard.base.CommonUtil;
+import com.example.tboard.domain.article.article.Article;
+
 import java.util.ArrayList;
 
-public class ArticleRepository {
+public class MyArticleRepository {
     ArrayList<Article> articleList = new ArrayList<>();
     CommonUtil commonUtil = new CommonUtil();
     int latestArticleId = 4;
 
-    public ArticleRepository() {
+    public MyArticleRepository() {
         makeTestData(); // 시작과 동시에 테스트 데이터 생성
     }
 

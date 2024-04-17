@@ -87,6 +87,7 @@ public class ArticleController { // Model + Controller
 
         ArrayList<Article> articleList = articleRepository.findAll();
         model.addAttribute("articleList", articleList);
+        model.addAttribute("loginedUser", "cha");
 
         return "list";
     }

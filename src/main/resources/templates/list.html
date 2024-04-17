@@ -5,6 +5,7 @@
     <title>게시물 목록</title>
 </head>
 <body>
+<div><span th:text="${loginedUser}"></span>님! 반갑습니다.</div>
 <h1>목록</h1>
 <ul>
     <li th:each="article : ${articleList}">

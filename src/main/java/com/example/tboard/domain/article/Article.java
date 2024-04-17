@@ -1,4 +1,4 @@
-package com.example.tboard.domain;
+package com.example.tboard.domain.article;
 
 public class Article {
     private int id; // 번호

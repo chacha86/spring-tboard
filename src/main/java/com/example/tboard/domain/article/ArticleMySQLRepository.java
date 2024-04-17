@@ -1,4 +1,4 @@
-package com.example.tboard.domain;
+package com.example.tboard.domain.article;
 
 import com.example.tboard.base.CommonUtil;
 

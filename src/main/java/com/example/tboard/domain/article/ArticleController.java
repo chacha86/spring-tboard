@@ -1,11 +1,14 @@
 package com.example.tboard.domain.article;
 
 import com.example.tboard.base.CommonUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ArticleController { // Model + Controller
@@ -107,9 +110,22 @@ public class ArticleController { // Model + Controller
 
     // 입력 화면 보여주기
     @GetMapping("/add")
-    public String form() {
+    public String form(String loginId, String loginPw, HttpServletRequest request, Model model) {
+
+        // 브라우저에 있는 쿠키 정보 가져오기
+        Cookie[] cookies = request.getCookies();
+        Cookie targetCookie = null;
+
+        // username이라는 이름을 가진 쿠키 찾기
+        for(Cookie cookie : cookies) {
+            if(cookie.getName().equals("username")) {
+                targetCookie = cookie;
+            }
+        }
+
+        // username이라는 이름을 가진 쿠키를 이용해 로그인 유저 정보 확인
+        model.addAttribute("loginedUser", targetCookie.getValue());
+
         return "form";
     }
-
-
 }

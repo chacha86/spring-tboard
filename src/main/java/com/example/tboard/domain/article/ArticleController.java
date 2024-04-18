@@ -28,7 +28,7 @@ public class ArticleController { // Model + Controller
     }
 
     @RequestMapping("/detail/{articleId}")
-    public String detail(@PathVariable("articleId") int articleId, Model model) {
+    public String detail(@PathVariable("articleId") int articleId, Model model, HttpServletRequest request) {
 
         Article article = articleRepository.findArticleById(articleId);
 
@@ -37,7 +37,9 @@ public class ArticleController { // Model + Controller
         }
 
         article.increaseHit();
+        String username = getUsernameByCookie(request);
 
+        model.addAttribute("loginedUser", username);
         model.addAttribute("article", article);
         return "detail";
     }
@@ -86,10 +88,14 @@ public class ArticleController { // Model + Controller
     }
 
     @RequestMapping("/list")
-    public String list(Model model) {
+    public String list(Model model, HttpServletRequest request) {
 
         ArrayList<Article> articleList = articleRepository.findAll();
+        String username = getUsernameByCookie(request);
+
+        model.addAttribute("loginedUser", username);
         model.addAttribute("articleList", articleList);
+
         return "list";
     }
 
@@ -112,20 +118,26 @@ public class ArticleController { // Model + Controller
     @GetMapping("/add")
     public String form(String loginId, String loginPw, HttpServletRequest request, Model model) {
 
-        // 브라우저에 있는 쿠키 정보 가져오기
-        Cookie[] cookies = request.getCookies();
-        Cookie targetCookie = null;
+        String username = getUsernameByCookie(request);
+        model.addAttribute("loginedUser", username);
 
+        return "form";
+    }
+
+    private String getUsernameByCookie(HttpServletRequest request) {
+
+        if(request.getCookies() == null) {
+            return null;
+        }
+
+        Cookie[] cookies = request.getCookies();
         // username이라는 이름을 가진 쿠키 찾기
         for(Cookie cookie : cookies) {
             if(cookie.getName().equals("username")) {
-                targetCookie = cookie;
+                return cookie.getValue();
             }
         }
 
-        // username이라는 이름을 가진 쿠키를 이용해 로그인 유저 정보 확인
-        model.addAttribute("loginedUser", targetCookie.getValue());
-
-        return "form";
+        return null;
     }
 }

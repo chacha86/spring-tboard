@@ -14,9 +14,14 @@
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                 </div>
-                <div><span th:text="${loginedUser}"></span>님 안녕하세요</div>
+                <div th:if="${loginedUser != null}"><span th:text="${loginedUser}"></span>님 안녕하세요</div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="/login">로그인</a></li>
+                    <div th:if="${loginedUser == null}">
+                        <li><a href="/login">로그인</a></li>
+                    </div>
+                    <div th:unless="${loginedUser == null}">
+                        <li><a href="/login">로그아웃</a></li>
+                    </div>
                     <li><a href="/list">글 목록</a></li>
                     <li><a href="/add">글 등록</a></li>
                 </ul>

@@ -13,22 +13,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final LoginService loginService;
     private final FailureHandler failureHandler;
-
-    @PostMapping("/login")
-    public String login(String loginId, String loginPw, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-
-        try {
-            MemberAuth memberAuth = loginService.loginProcess(loginId, loginPw);
-            session.setAttribute("memberAuth", memberAuth);
-        } catch (Exception e) {
-            failureHandler.handle(request, response);
-            return "redirect:/login?error";
-        }
-
-        return "redirect:/list";
-    }
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {

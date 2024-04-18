@@ -8,10 +8,4 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-
-    private final DaoAuthenticationProcessor authenticationProcessor;
-
-    public MemberAuth loginProcess(String loginId, String loginPw) {
-        return authenticationProcessor.authenticate(loginId, loginPw);
-    }
 }

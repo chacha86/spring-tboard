@@ -1,6 +1,7 @@
 package com.example.tboard.domain.article.member.authentication;
 
 import com.example.tboard.domain.article.member.MemberService;
+import com.example.tboard.domain.article.member.authentication.filter.AuthToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,12 +11,12 @@ public class DaoAuthenticationProcessor implements AuthenticationProcessor {
 
     private final MemberAuthService memberAuthService;
     @Override
-    public MemberAuth authenticate(String loginId, String loginPw) {
+    public MemberAuth authenticate(AuthToken authToken) {
 
-        MemberAuth memberAuth = memberAuthService.loadUserByUsername(loginId);
-
-        if (memberAuth.getAuthToken().equals(loginPw)) {
-            memberAuth.setAuthToken(loginPw);
+        MemberAuth memberAuth = memberAuthService.loadUserByUsername(authToken.getLoginId());
+        String pw = authToken.getLoginPw();
+        if (memberAuth.getAuthToken().equals(pw)) {
+            memberAuth.setAuthToken(pw);
             return memberAuth;
         }
 

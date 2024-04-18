@@ -6,6 +6,7 @@ import com.example.tboard.domain.article.Repository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(String loginId, String loginPw, HttpServletResponse response, Model model) {
+    public String login(String loginId, String loginPw, HttpServletResponse response, Model model, HttpSession session) {
         String dbUser = "cha";
         String dbPass = "1234";
         String role = "USER";
@@ -33,11 +34,12 @@ public class LoginController {
 
             List<Article> articleList = articleRepository.findAll();
             model.addAttribute("articleList", articleList);
-            model.addAttribute("loginedUser", loginId);
 
             // 로그인 성공하면 해당 유저를 쿠키로 저장. 이제 부터 해당 쿠키를 제시하면 로그인 인증된 유저로 활동 가능
-            Cookie cookie1 = new Cookie("username", loginId);
-            response.addCookie(cookie1);
+//            Cookie cookie1 = new Cookie("username", loginId);
+//            response.addCookie(cookie1);
+
+            session.setAttribute("loginedUser", loginId);
 
             return "list"; // forwarding
         }

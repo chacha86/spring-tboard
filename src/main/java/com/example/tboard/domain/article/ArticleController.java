@@ -91,9 +91,6 @@ public class ArticleController { // Model + Controller
     public String list(Model model, HttpServletRequest request) {
 
         ArrayList<Article> articleList = articleRepository.findAll();
-        String username = getUsernameByCookie(request);
-
-        model.addAttribute("loginedUser", username);
         model.addAttribute("articleList", articleList);
 
         return "list";
@@ -117,9 +114,6 @@ public class ArticleController { // Model + Controller
     // 입력 화면 보여주기
     @GetMapping("/add")
     public String form(String loginId, String loginPw, HttpServletRequest request, Model model) {
-
-        String username = getUsernameByCookie(request);
-        model.addAttribute("loginedUser", username);
 
         return "form";
     }

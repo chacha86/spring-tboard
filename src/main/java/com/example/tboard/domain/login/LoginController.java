@@ -29,7 +29,7 @@ public class LoginController {
         String dbPass = "1234";
         String role = "USER";
 
-        if(loginId.equals(dbUser) && loginPw.equals(dbPass)) {
+        if (loginId.equals(dbUser) && loginPw.equals(dbPass)) {
 
             List<Article> articleList = articleRepository.findAll();
             model.addAttribute("articleList", articleList);
@@ -43,6 +43,18 @@ public class LoginController {
         }
 
         return "redirect:/login?error";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+
+        Cookie cookie = new Cookie("username", "");
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+
+        return "redirect:/list";
+
     }
 
     @GetMapping("/cookie-test")

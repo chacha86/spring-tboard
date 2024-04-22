@@ -15,6 +15,13 @@ import java.io.IOException;
 
 public class LoginCheckFilter implements Filter {
     private final AuthenticationProcessor authenticationProcessor;
+    private final String SUCCESS_URL = "/list";
+    private final String ERROR_URL = "/login?error";
+    private final String PROCESS_URL = "/login";
+    private final String PROCESS_METHOD = "POST";
+    private final String ID_NAME = "loginId";
+    private final String PW_NAME = "loginPw";
+    private final String AUTH_NAME = "memberAuth";
 
     public LoginCheckFilter(AuthenticationProcessor authenticationProcessor) {
         this.authenticationProcessor = authenticationProcessor;
@@ -32,19 +39,18 @@ public class LoginCheckFilter implements Filter {
 
         String method = req.getMethod();
         String requestURI = req.getRequestURI();
-        System.out.println("hihi");
 
-        if (requestURI.equals("/login") && method.equals("POST")) {
-            System.out.println("login process");
-            String loginId = req.getParameter("loginId");
-            String loginPw = req.getParameter("loginPw");
+        if (requestURI.equals(PROCESS_URL) && method.equals(PROCESS_METHOD)) {
+            String loginId = req.getParameter(ID_NAME);
+            String loginPw = req.getParameter(PW_NAME);
 
             try {
                 MemberAuth memberAuth = authenticationProcessor.authenticate(makeAuthToken(loginId, loginPw));
-                req.getSession().setAttribute("memberAuth", memberAuth);
-                res.sendRedirect("/list");
+                req.getSession().setAttribute(AUTH_NAME, memberAuth);
+                res.sendRedirect(SUCCESS_URL);
+
             } catch (Exception e) {
-                res.sendRedirect("/login?error");
+                res.sendRedirect(ERROR_URL);
             }
         }
 

@@ -20,4 +20,11 @@ public class FilterConfig {
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
+    @Bean
+    public FilterRegistrationBean<RequestFilter> RequestFilter() {
+        FilterRegistrationBean<RequestFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RequestFilter());
+        registrationBean.addUrlPatterns("/*");
+        return registrationBean;
+    }
 }

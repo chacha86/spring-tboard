@@ -48,12 +48,14 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
+    public String logout(HttpSession session) {
 
-        Cookie cookie = new Cookie("username", "");
-        cookie.setMaxAge(0);
+//        Cookie cookie = new Cookie("username", "");
+//        cookie.setMaxAge(0);
+//
+//        response.addCookie(cookie);
 
-        response.addCookie(cookie);
+        session.invalidate();
 
         return "redirect:/list";
 

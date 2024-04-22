@@ -21,21 +21,6 @@ public class LoginController {
 
     Repository articleRepository = new ArticleMySQLRepository();
 
-    @GetMapping("/admin-page")
-    public String adminPage(HttpSession session) {
-
-        Member member = (Member)session.getAttribute("loginedUser");
-
-        if(member == null) {
-            throw new RuntimeException("로그인 후 이용해주세요.");
-        }
-
-        if(!member.getRole().equals("ADMIN")) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-
-        return "admin_page";
-    }
 
     @GetMapping("/login")
     public String login() {

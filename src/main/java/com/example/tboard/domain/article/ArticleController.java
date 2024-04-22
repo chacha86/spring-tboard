@@ -1,14 +1,15 @@
 package com.example.tboard.domain.article;
 
 import com.example.tboard.base.CommonUtil;
+import com.example.tboard.domain.member.Member;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class ArticleController { // Model + Controller
@@ -100,7 +101,13 @@ public class ArticleController { // Model + Controller
     @PostMapping("/add")
     public String add(@RequestParam("title") String title,
                       @RequestParam("body") String body,
-                      Model model) {
+                      Model model, HttpSession session) {
+
+        Member member = (Member)session.getAttribute("loginedUser");
+
+        if(member == null) {
+            throw new RuntimeException("로그인 후 이용해주세요.");
+        }
 
         articleRepository.saveArticle(title, body);
 
@@ -113,7 +120,13 @@ public class ArticleController { // Model + Controller
 
     // 입력 화면 보여주기
     @GetMapping("/add")
-    public String form(String loginId, String loginPw, HttpServletRequest request, Model model) {
+    public String form(String loginId, String loginPw, HttpServletRequest request, Model model, HttpSession session) {
+        Member member = (Member)session.getAttribute("loginedUser");
+
+        if(member == null) {
+            throw new RuntimeException("로그인 후 이용해주세요.");
+        }
+
 
         return "form";
     }

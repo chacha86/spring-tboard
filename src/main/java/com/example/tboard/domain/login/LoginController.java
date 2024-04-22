@@ -3,6 +3,7 @@ package com.example.tboard.domain.login;
 import com.example.tboard.domain.article.Article;
 import com.example.tboard.domain.article.ArticleMySQLRepository;
 import com.example.tboard.domain.article.Repository;
+import com.example.tboard.domain.member.Member;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,12 +13,29 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class LoginController {
 
     Repository articleRepository = new ArticleMySQLRepository();
+
+    @GetMapping("/admin-page")
+    public String adminPage(HttpSession session) {
+
+        Member member = (Member)session.getAttribute("loginedUser");
+
+        if(member == null) {
+            throw new RuntimeException("로그인 후 이용해주세요.");
+        }
+
+        if(!member.getRole().equals("ADMIN")) {
+            throw new RuntimeException("관리자만 접근 가능합니다.");
+        }
+
+        return "admin_page";
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -26,22 +44,23 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(String loginId, String loginPw, HttpServletResponse response, Model model, HttpSession session) {
-        String dbUser = "cha";
-        String dbPass = "1234";
-        String role = "USER";
 
-        if (loginId.equals(dbUser) && loginPw.equals(dbPass)) {
+        List<Member> memberDB = new ArrayList<>();
 
-            List<Article> articleList = articleRepository.findAll();
-            model.addAttribute("articleList", articleList);
+        Member member = new Member("cha", "1234", "USER");
+        Member member2 = new Member("hong", "1234", "ADMIN");
+        memberDB.add(member);
+        memberDB.add(member2);
 
-            // 로그인 성공하면 해당 유저를 쿠키로 저장. 이제 부터 해당 쿠키를 제시하면 로그인 인증된 유저로 활동 가능
-//            Cookie cookie1 = new Cookie("username", loginId);
-//            response.addCookie(cookie1);
+        for (Member m : memberDB) {
+            if (loginId.equals(m.getLoginId()) && loginPw.equals(m.getLoginPw())) {
 
-            session.setAttribute("loginedUser", loginId);
+                List<Article> articleList = articleRepository.findAll();
+                model.addAttribute("articleList", articleList);
+                session.setAttribute("loginedUser", m);
 
-            return "list"; // forwarding
+                return "list"; // forwarding
+            }
         }
 
         return "redirect:/login?error";

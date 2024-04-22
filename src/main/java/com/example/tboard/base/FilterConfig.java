@@ -13,7 +13,7 @@ public class FilterConfig {
         AdminFilter adminFilter = new AdminFilter();
 
         registrationBean.setFilter(adminFilter);
-        registrationBean.addUrlPatterns("/**");  // 필터가 적용될 URL 패턴
+        registrationBean.addUrlPatterns("/admin/*");  // 필터가 적용될 URL 패턴
 
         return registrationBean;
     }

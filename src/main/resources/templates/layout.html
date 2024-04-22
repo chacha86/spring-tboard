@@ -24,7 +24,7 @@
                     </div>
                     <li><a href="/list">글 목록</a></li>
                     <li><a href="/add">글 등록</a></li>
-                    <li th:if="${session.loginedUser != null and session.loginedUser.role == 'ADMIN'}"><a href="/admin-page">관리자 페이지</a></li>
+                    <li th:if="${session.loginedUser != null and session.loginedUser.role == 'ADMIN'}"><a href="/admin/admin-page">관리자 페이지</a></li>
                 </ul>
             </div>
         </div>

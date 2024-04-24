@@ -121,13 +121,6 @@ public class ArticleController { // Model + Controller
     // 입력 화면 보여주기
     @GetMapping("/add")
     public String form(String loginId, String loginPw, HttpServletRequest request, Model model, HttpSession session) {
-        Member member = (Member)session.getAttribute("loginedUser");
-
-        if(member == null) {
-            throw new RuntimeException("로그인 후 이용해주세요.");
-        }
-
-
         return "form";
     }
 

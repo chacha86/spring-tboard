@@ -1,6 +1,7 @@
 package com.example.tboard.base;
 
 import com.example.tboard.domain.admin.AdminFilter;
+import com.example.tboard.domain.authentication.filter.AuthenticationFilter;
 import com.example.tboard.domain.login.LoginFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,16 @@ public class FilterConfig {
         registrationBean.addUrlPatterns("/add");
         registrationBean.addUrlPatterns("/detail/*");
         registrationBean.setOrder(1);
+
+        return registrationBean;
+    }
+    @Bean
+    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter() {
+        FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+
+        registrationBean.setFilter(authenticationFilter);
+        registrationBean.addUrlPatterns("/login");
 
         return registrationBean;
     }

@@ -1,7 +1,7 @@
 package com.example.tboard.domain.authentication.filter;
 
-import com.example.tboard.domain.authentication.processor.MemoryAuthenticationProcessor;
-import com.example.tboard.domain.member.Member;
+import com.example.tboard.domain.authentication.processor.DaoAuthenticationProcessor;
+import com.example.tboard.domain.member.MemberAuth;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +11,12 @@ import java.io.IOException;
 
 public class AuthenticationFilter implements Filter {
 
-    MemoryAuthenticationProcessor memoryAuthenticationProcessor = new MemoryAuthenticationProcessor();
+    DaoAuthenticationProcessor daoAuthenticationProcessor ;
+
+    public AuthenticationFilter(DaoAuthenticationProcessor daoAuthenticationProcessor) {
+        this.daoAuthenticationProcessor = daoAuthenticationProcessor;
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         System.out.println("로그인 요청을 가로챕니다.");
@@ -27,9 +32,12 @@ public class AuthenticationFilter implements Filter {
             String loginId = req.getParameter("loginId");
             String loginPw = req.getParameter("loginPw");
             // 로그인 파라미터를 꺼내기
-            Member member = memoryAuthenticationProcessor.authenticate(loginId, loginPw);
+            MemberAuth memberAuth = daoAuthenticationProcessor.authenticate(loginId, loginPw);
 
-            session.setAttribute("loginedMember", member);
+            session.setAttribute("loginedMember", memberAuth);
+
+            res.sendRedirect("/list");
+            return;
         }
 
         chain.doFilter(request, response);

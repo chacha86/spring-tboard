@@ -1,6 +1,7 @@
 package com.example.tboard.domain.authentication.filter;
 
 import com.example.tboard.domain.authentication.processor.OAuth2AuthenticationProcessor;
+import com.example.tboard.domain.authentication.processor.OauthRegistrationBean;
 import com.example.tboard.domain.member.MemberAuth;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,15 +11,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
 
 public class OauthAuthenticationFilter implements Filter {
-    private final String OAUTH2_AUTHORIZATION_URL = "https://kauth.kakao.com/oauth/authorize";
-    private final String OAUTH2_RESPONSE_TYPE = "code";
-
-    private final String OAUTH2_CLIENT_ID = "ebf4c71717c85af7ffb54016b89ab632";
-    private final String OAUTH2_REDIRECT_URI = "http://localhost:8088/oauth/callback";
+    private final OauthRegistrationBean oauthRegistrationBean;
     private OAuth2AuthenticationProcessor authenticationProcessor;
 
-    public OauthAuthenticationFilter(OAuth2AuthenticationProcessor oAuth2AuthenticationProcessor) {
+    public OauthAuthenticationFilter(OAuth2AuthenticationProcessor oAuth2AuthenticationProcessor,
+                                     OauthRegistrationBean oauthRegistrationBean) {
         this.authenticationProcessor = oAuth2AuthenticationProcessor;
+        this.oauthRegistrationBean = oauthRegistrationBean;
     }
 
     @Override
@@ -34,10 +33,10 @@ public class OauthAuthenticationFilter implements Filter {
 
             System.out.println("oauth2 로그인 요청");
             StringBuilder uriBuilder = new StringBuilder();
-            uriBuilder.append(OAUTH2_AUTHORIZATION_URL)
-                    .append("?client_id=").append(OAUTH2_CLIENT_ID)
-                    .append("&redirect_uri=").append(OAUTH2_REDIRECT_URI)
-                    .append("&response_type=").append(OAUTH2_RESPONSE_TYPE);
+            uriBuilder.append(oauthRegistrationBean.getAuthorizationUri())
+                    .append("?client_id=").append(oauthRegistrationBean.getClientId())
+                    .append("&redirect_uri=").append(oauthRegistrationBean.getRedirectUri())
+                    .append("&response_type=").append("code");
 
             res.sendRedirect(uriBuilder.toString());
             return;

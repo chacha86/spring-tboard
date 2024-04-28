@@ -2,6 +2,7 @@ package com.example.tboard.domain.authentication.processor;
 
 import com.example.tboard.domain.member.MemberAuth;
 import com.example.tboard.domain.member.Oauth2MemberAuth;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -12,15 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class OAuth2AuthenticationProcessor {
 
-    private final String OAUTH2_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
-
-    private final String OAUTH2_GRANT_TYPE = "authorization_code";
-
-    private final String OAUTH2_CLIENT_ID = "ebf4c71717c85af7ffb54016b89ab632";
-    private final String OAUTH2_REDIRECT_URI = "http://localhost:8088/oauth/callback";
-    private final String OATUH2_USERINFO_URL = "https://kapi.kakao.com/v2/user/me";
+    private final OauthRegistrationBean oauthRegistrationBean;
 
     public MemberAuth authenticate(String code) {
 
@@ -28,15 +24,15 @@ public class OAuth2AuthenticationProcessor {
         System.out.println("oauth2 처리 요청");
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("grant_type", OAUTH2_GRANT_TYPE);
-        formData.add("client_id", OAUTH2_CLIENT_ID);
-        formData.add("redirect_uri", OAUTH2_REDIRECT_URI);
+        formData.add("grant_type", oauthRegistrationBean.getGrantType());
+        formData.add("client_id", oauthRegistrationBean.getClientId());
+        formData.add("redirect_uri", oauthRegistrationBean.getRedirectUri());
         formData.add("code", code);
         Map<String, Object> result = new HashMap<>();
         try {
 
             result = webClient.post()
-                    .uri(OAUTH2_TOKEN_URL)
+                    .uri(oauthRegistrationBean.getTokenUri())
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .bodyValue(formData)
                     .retrieve()
@@ -53,7 +49,7 @@ public class OAuth2AuthenticationProcessor {
         Map<String, Object> userInfo = new HashMap<>();
         try {
 
-            userInfo = webClient.get().uri(OATUH2_USERINFO_URL)
+            userInfo = webClient.get().uri(oauthRegistrationBean.getUserInfoUri())
                     .header("Authorization", "Bearer " + accessToken)
                     .retrieve()
                     .bodyToMono(Map.class)

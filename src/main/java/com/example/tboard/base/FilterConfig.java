@@ -5,6 +5,7 @@ import com.example.tboard.domain.authentication.filter.AuthenticationFilter;
 import com.example.tboard.domain.authentication.filter.OauthAuthenticationFilter;
 import com.example.tboard.domain.authentication.processor.DaoAuthenticationProcessor;
 import com.example.tboard.domain.authentication.processor.OAuth2AuthenticationProcessor;
+import com.example.tboard.domain.authentication.processor.OauthRegistrationBean;
 import com.example.tboard.domain.login.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -17,6 +18,7 @@ public class FilterConfig {
 
     private final DaoAuthenticationProcessor daoAuthenticationProcessor;
     private final OAuth2AuthenticationProcessor oAuth2AuthenticationProcessor;
+    private final OauthRegistrationBean oauthRegistrationBean;
 
     @Bean
     public FilterRegistrationBean<AdminFilter> adminFilter() {
@@ -56,7 +58,7 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean<OauthAuthenticationFilter> oAuth2AuthenticationFilter() {
         FilterRegistrationBean<OauthAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        OauthAuthenticationFilter authenticationFilter = new OauthAuthenticationFilter(oAuth2AuthenticationProcessor);
+        OauthAuthenticationFilter authenticationFilter = new OauthAuthenticationFilter(oAuth2AuthenticationProcessor, oauthRegistrationBean);
 
         registrationBean.setFilter(authenticationFilter);
         registrationBean.addUrlPatterns("/oauth/login");

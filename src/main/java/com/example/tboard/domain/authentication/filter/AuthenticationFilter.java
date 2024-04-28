@@ -1,7 +1,7 @@
 package com.example.tboard.domain.authentication.filter;
 
 import com.example.tboard.domain.authentication.processor.DaoAuthenticationProcessor;
-import com.example.tboard.domain.member.MemberAuth;
+import com.example.tboard.domain.member.FormMemberAuth;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,9 +32,9 @@ public class AuthenticationFilter implements Filter {
             String loginId = req.getParameter("loginId");
             String loginPw = req.getParameter("loginPw");
             // 로그인 파라미터를 꺼내기
-            MemberAuth memberAuth = daoAuthenticationProcessor.authenticate(loginId, loginPw);
+            FormMemberAuth formMemberAuth = daoAuthenticationProcessor.authenticate(loginId, loginPw);
 
-            session.setAttribute("loginedMember", memberAuth);
+            session.setAttribute("loginedMember", formMemberAuth);
 
             res.sendRedirect("/list");
             return;

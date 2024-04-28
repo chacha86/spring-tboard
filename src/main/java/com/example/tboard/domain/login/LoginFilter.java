@@ -1,7 +1,7 @@
 package com.example.tboard.domain.login;
 
 
-import com.example.tboard.domain.member.MemberAuth;
+import com.example.tboard.domain.member.FormMemberAuth;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,9 +19,9 @@ public class LoginFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession();
-        MemberAuth memberAuth = (MemberAuth)session.getAttribute("loginedUser");
+        FormMemberAuth formMemberAuth = (FormMemberAuth)session.getAttribute("loginedUser");
 
-        if(memberAuth == null) {
+        if(formMemberAuth == null) {
             throw new RuntimeException("로그인이 필요합니다.");
         }
 

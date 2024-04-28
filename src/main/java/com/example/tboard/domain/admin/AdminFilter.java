@@ -1,6 +1,6 @@
 package com.example.tboard.domain.admin;
 
-import com.example.tboard.domain.member.MemberAuth;
+import com.example.tboard.domain.member.FormMemberAuth;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +22,9 @@ public class AdminFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse)response;
 
         HttpSession session = req.getSession();
-        MemberAuth memberAuth = (MemberAuth)session.getAttribute("loginedUser");
+        FormMemberAuth formMemberAuth = (FormMemberAuth)session.getAttribute("loginedUser");
 
-        if(!memberAuth.getRole().equals("ADMIN")) {
+        if(!formMemberAuth.getRole().equals("ADMIN")) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
         chain.doFilter(request, response);

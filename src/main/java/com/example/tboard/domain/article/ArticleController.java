@@ -1,7 +1,7 @@
 package com.example.tboard.domain.article;
 
 import com.example.tboard.base.CommonUtil;
-import com.example.tboard.domain.member.MemberAuth;
+import com.example.tboard.domain.member.FormMemberAuth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -103,9 +103,9 @@ public class ArticleController { // Model + Controller
                       @RequestParam("body") String body,
                       Model model, HttpSession session) {
 
-        MemberAuth memberAuth = (MemberAuth)session.getAttribute("loginedUser");
+        FormMemberAuth formMemberAuth = (FormMemberAuth)session.getAttribute("loginedUser");
 
-        if(memberAuth == null) {
+        if(formMemberAuth == null) {
             throw new RuntimeException("로그인 후 이용해주세요.");
         }
 

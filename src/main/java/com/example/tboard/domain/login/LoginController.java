@@ -15,6 +15,19 @@ public class LoginController {
     Repository articleRepository = new ArticleMySQLRepository();
 
 
+    @GetMapping("/kakao-login")
+    public String kakaoLogin() {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("https://kauth.kakao.com/oauth/authorize");
+        sb.append("?client_id=62e93e2c976d6b7d96c64790d47f294e");
+        sb.append("&redirect_uri=http://localhost:8088/callback");
+        sb.append("&response_type=code");
+        String uri = sb.toString();
+
+        return "redirect:" + uri;
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login_form";

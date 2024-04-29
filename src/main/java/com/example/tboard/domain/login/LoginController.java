@@ -42,9 +42,14 @@ public class LoginController {
                 .bodyToMono(Map.class)
                 .block();
 
-        System.out.println(result.get("access_token"));
-        System.out.println(result.get("refresh_token"));
-        System.out.println(result.get("token_type"));
+        Map<String, Object> userInfo = client.post().uri("https://kapi.kakao.com/v2/user/me")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .header("Authorization", "Bearer " + result.get("access_token"))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        System.out.println(userInfo);
 
         return "redirect:/list";
     }

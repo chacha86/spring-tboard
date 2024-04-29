@@ -6,8 +6,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Map;
 
 @Controller
 public class LoginController {
@@ -18,8 +24,31 @@ public class LoginController {
     @GetMapping("/callback")
     public String callback(String code) {
         System.out.println("code : " + code);
+
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.set("grant_type", "authorization_code");
+        formData.set("client_id", "62e93e2c976d6b7d96c64790d47f294e");
+        formData.set("redirect_uri", "http://localhost:8088/callback");
+        formData.set("code", code);
+
+
+        WebClient client = WebClient.create();
+
+        Map<String, Object> result = client.post()
+                .uri("https://kauth.kakao.com/oauth/token")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .bodyValue(formData)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        System.out.println(result.get("access_token"));
+        System.out.println(result.get("refresh_token"));
+        System.out.println(result.get("token_type"));
+
         return "redirect:/list";
     }
+
     @GetMapping("/kakao-login")
     public String kakaoLogin() {
 

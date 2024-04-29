@@ -2,6 +2,7 @@ package com.example.tboard.domain.login;
 
 import com.example.tboard.domain.article.ArticleMySQLRepository;
 import com.example.tboard.domain.article.Repository;
+import com.example.tboard.domain.member.MemberAuth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +23,7 @@ public class LoginController {
 
 
     @GetMapping("/callback")
-    public String callback(String code) {
+    public String callback(String code, HttpSession session) {
         System.out.println("code : " + code);
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
@@ -49,7 +50,10 @@ public class LoginController {
                 .bodyToMono(Map.class)
                 .block();
 
-        System.out.println(userInfo);
+        String id = userInfo.get("id").toString();
+        MemberAuth auth = new MemberAuth(id, "", "USER");
+
+        session.setAttribute("loginedMember", auth);
 
         return "redirect:/list";
     }

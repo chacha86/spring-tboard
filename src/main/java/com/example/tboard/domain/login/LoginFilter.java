@@ -19,7 +19,7 @@ public class LoginFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession();
-        MemberAuth memberAuth = (MemberAuth)session.getAttribute("loginedUser");
+        MemberAuth memberAuth = (MemberAuth)session.getAttribute("loginedMember");
 
         if(memberAuth == null) {
             throw new RuntimeException("로그인이 필요합니다.");

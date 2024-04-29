@@ -15,6 +15,11 @@ public class LoginController {
     Repository articleRepository = new ArticleMySQLRepository();
 
 
+    @GetMapping("/callback")
+    public String callback(String code) {
+        System.out.println("code : " + code);
+        return "redirect:/list";
+    }
     @GetMapping("/kakao-login")
     public String kakaoLogin() {
 
